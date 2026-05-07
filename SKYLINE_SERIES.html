@@ -143,7 +143,14 @@
                         <li><strong>Cellule :</strong> Mousse polystyrène extrudée (XPS) pour la légèreté.</li>
                         <li><strong>Renforts :</strong> Intégration de longerons en bois de pin traversant l'aile pour prévenir la flexion sous charge.</li>
                     </ul>
-                    <img src="skyline1_build.jpg" alt="Construction Skyline 1" class="doc-img2">
+                    <!-- <img src="skyline1_build.jpg" alt="Construction Skyline 1" class="doc-img2"> -->
+                <div class="photo-gallery">
+                    <img src="SKY-LINE/str1.png" class="doc-img" alt="Construction étape 1">
+                    <img src="SKY-LINE/str3.png" class="doc-img" alt="Construction étape 3">
+                    <img src="SKY-LINE/str2.png" class="doc-img" alt="Construction étape 2">
+                    
+                    <img src="SKY-LINE/str4.png" class="doc-img" alt="Construction étape 4">
+                </div>
                 </div>
             </section>
 
@@ -308,40 +315,45 @@ void updateFlightStabilization() {
 
     // 2. MENU MOBILE (BURGER) + INDEX CLONÉ (COMME R-LINE)
     const burger = document.getElementById('burgerMenu');
-    const nav = document.getElementById('navLinks');
-    const sidebar = document.querySelector('.doc-sidebar');
+const nav = document.getElementById('navLinks');
+const sidebar = document.querySelector('.doc-sidebar');
 
-    if (burger && nav) {
-        burger.addEventListener('click', () => {
-            nav.classList.toggle('active');
-            burger.classList.toggle('toggle');
-        });
-
-        // Fermeture automatique au clic sur un lien
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                nav.classList.remove('active');
-                burger.classList.remove('toggle');
-            });
-        });
-
-        // Clonage de l'index pour le mobile
-        if (window.innerWidth < 800 && sidebar) {
+if (burger && nav) {
+    // Inject index + footer once on mobile
+    if (window.innerWidth < 800) {
+        if (sidebar) {
             const indexClone = sidebar.cloneNode(true);
             nav.appendChild(indexClone);
         }
+        const footer = document.createElement('div');
+        footer.className = 'drawer-footer';
+        footer.innerHTML = `
+            <p class="drawer-brand">TALBI NASR ALLAH</p>
+            <p>Élève Ingénieur ENSAM</p>
+            <p>&copy; 2026 Tous droits réservés.</p>
+        `;
+        nav.appendChild(footer);
     }
-    // Fermer le menu en cliquant sur l'arrière-plan (n'importe où sauf le menu et le burger)
-document.addEventListener('click', (event) => {
-    const isClickInsideMenu = nav.contains(event.target);
-    const isClickOnBurger = burger.contains(event.target);
 
-    // Si le menu est ouvert ET que le clic n'est ni sur le menu ni sur le burger
-    if (nav.classList.contains('active') && !isClickInsideMenu && !isClickOnBurger) {
-        nav.classList.remove('active');
-        burger.classList.remove('toggle');
-    }
-});
+    burger.addEventListener('click', () => {
+        nav.classList.toggle('active');
+        burger.classList.toggle('toggle');
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            nav.classList.remove('active');
+            burger.classList.remove('toggle');
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        if (nav.classList.contains('active') && !nav.contains(e.target) && !burger.contains(e.target)) {
+            nav.classList.remove('active');
+            burger.classList.remove('toggle');
+        }
+    });
+}
 
     // 3. COPIE DU CODE
     document.querySelectorAll('.copy-btn').forEach(button => {
